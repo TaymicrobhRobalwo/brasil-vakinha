@@ -32,7 +32,7 @@
 
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            font-family: Montserrat, "Montserrat Fallback", arial, Arial, sans-serif;
             color: var(--text);
             background: #fff;
         }
@@ -68,7 +68,7 @@
             display: grid;
             place-items: center;
             color: #fff;
-            font-weight: 900;
+            font-weight: 700;
             font-size: 16px;
         }
 
@@ -153,7 +153,7 @@
             display: grid;
             place-items: center;
             color: #16a34a;
-            font-weight: 900;
+            font-weight: 700;
             font-size: 18px;
             flex: 0 0 auto;
         }
@@ -164,7 +164,7 @@
         }
 
         .ong-name {
-            font-weight: 900;
+            font-weight: 700;
             font-size: 14px;
             margin: 0;
         }
@@ -223,7 +223,6 @@
         }
 
         .thumb::after {
-            content: "SOS ENCHENTES";
             position: absolute;
             left: 10px;
             bottom: 8px;
@@ -237,7 +236,7 @@
         }
 
         .media-title {
-            font-weight: 900;
+            font-weight: 700;
             margin: 0;
             font-size: 13px;
         }
@@ -301,7 +300,7 @@
             display: grid;
             place-items: center;
             color: #111827;
-            font-weight: 900;
+            font-weight: 700;
             background: var(--soft2);
             border-right: 1px solid var(--line);
             height: 100%;
@@ -316,7 +315,7 @@
 
         .section-title {
             font-size: 12px;
-            font-weight: 900;
+            font-weight: 700;
             margin: 12px 0 8px;
         }
 
@@ -334,7 +333,7 @@
             gap: 8px;
             background: var(--green);
             color: #fff;
-            font-weight: 900;
+            font-weight: 700;
             padding: 8px 12px;
             border-radius: 10px;
             font-size: 13px;
@@ -346,6 +345,8 @@
             border-radius: 999px;
             background: #fff;
             box-shadow: inset 0 0 0 3px rgba(0, 0, 0, .0);
+            outline: rgb(255, 255, 255) solid 1px;
+            border: 3.5px solid rgb(36, 202, 104);
         }
 
         .check {
@@ -397,7 +398,7 @@
         .boost-badge {
             background: var(--green);
             color: #fff;
-            font-weight: 900;
+            font-weight: 700;
             font-size: 12px;
             padding: 6px 10px;
             border-radius: 999px;
@@ -405,7 +406,7 @@
         }
 
         .boost-price {
-            font-weight: 900;
+            font-weight: 700;
             color: #111827;
             white-space: nowrap;
             font-size: 13px;
@@ -430,7 +431,7 @@
         }
 
         .totals .row span:last-child {
-            font-weight: 900
+            font-weight: 700
         }
 
         .totals .row.muted {
@@ -628,7 +629,7 @@
             border-radius: 12px;
             border: 1px solid var(--line);
             background: #fff;
-            font-weight: 900;
+            font-weight: 700;
             cursor: pointer;
             padding: 0 12px;
             white-space: nowrap;
@@ -712,8 +713,7 @@
 <body>
     <header class="topbar">
         <div class="brand">
-            <div class="logo">V</div>
-            <div>vakinha</div>
+            <img src="images/logo.webp" style="width: 60%;">
         </div>
 
         <div class="top-actions">
@@ -738,7 +738,9 @@
 
         <section class="ong-card">
             <div class="ong-top">
-                <div class="ong-avatar">V</div>
+                <div class="ong-avatar"><img
+                        src="https://static.vakinha.com.br/uploads/user/avatar/12435584/1754490076.207.jpg?ims=225x225"
+                        style="width: 100%; border-radius: 100%;"></div>
                 <div class="ong-info">
                     <p class="ong-name">Instituto Vakinha</p>
                     <p class="ong-loc">Porto Alegre / Rio Grande do Sul</p>
@@ -750,7 +752,9 @@
             </div>
 
             <div class="ong-media">
-                <div class="thumb"></div>
+                <div class="thumb"><img
+                        src="https://static.vakinha.com.br/uploads/vakinha/image/5965746/1771959921.409.jpg?ims=105x62"
+                        style="width: 100%;"></div>
                 <div class="media-info">
                     <p class="media-title">SOS Juiz de Fora</p>
                     <p class="media-id">ID 5965746</p>
@@ -783,7 +787,7 @@
                 <label>Valor da contribuição</label>
                 <div class="money">
                     <span>R$</span>
-                    <input id="amount" inputmode="decimal" placeholder="50,00" value="50,00" />
+                    <input id="amount" inputmode="decimal" placeholder="0,00" value="0,00" />
                 </div>
             </div>
 
@@ -809,8 +813,8 @@
             </div>
 
             <div class="totals">
-                <div class="row muted"><span>Contribuição:</span><span id="subTotal">R$ 50,00</span></div>
-                <div class="row muted"><span>Total:</span><span id="total">R$ 50,00</span></div>
+                <div class="row muted"><span>Contribuição:</span><span id="subTotal">R$ 0,00</span></div>
+                <div class="row muted"><span>Total:</span><span id="total">R$ 0,00</span></div>
             </div>
 
             <div class="line"></div>
@@ -831,14 +835,10 @@
                 e permite o compartilhamento dos dados de e-mail e telefone com a ONG.
             </div>
 
-            <div class="security">
-                <div class="shield" aria-hidden="true">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4zm0 2.2L6 7v5c0 4 2.6 7.6 6 8 3.4-.4 6-4 6-8V7l-6-2.8z" />
-                    </svg>
-                </div>
-                <div class="t"><b>SELO DE SEGURANÇA</b><br />Garantimos uma experiência segura para todos os nossos
+            <div class="security"><img src="https://static.vakinha.com.br/static/v4/SELO.png?ims=115x40"
+                    alt="Selo de segurança" display="block">
+
+                <div class="t"><br />Garantimos uma experiência segura para todos os nossos
                     doadores.</div>
             </div>
         </section>
@@ -920,7 +920,7 @@
         }
 
         function parseBRLToCents(str) {
-            // "50,00" -> 20000
+            // "0,00" -> 20000
             str = (str || "").trim();
             str = str.replace(/\./g, "").replace(",", ".");
             const n = Number(str);
