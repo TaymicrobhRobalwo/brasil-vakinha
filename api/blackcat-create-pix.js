@@ -69,7 +69,7 @@ module.exports = async (req, res) => {
             paymentMethod: "pix", // doc usa "pix"
             items: [
                 {
-                    title: "Doação - SOS Juiz de Fora",
+                    title: "Kit Body Splash WPink",
                     unitPrice: amount,
                     quantity: 1,
                     tangible: false
