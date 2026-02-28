@@ -1037,10 +1037,9 @@
         </header>
 
         <main class="checkout-content">
-            <div class="steps-wrapper" id="stepper">
-                <div class="step-indicator active" data-step-label="1">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Identificação</div>
+            <div class="steps-wrapper" id="stepper" style="display:none"></div>
+
+<div class="step-label">Identificação</div>
                 </div>
                 <div class="step-indicator" data-step-label="2">
                     <div class="step-circle">2</div>
@@ -1055,45 +1054,40 @@
             <!-- STEP 1 -->
             <section id="screen-identificacao" class="step-screen active">
                 <div class="card">
-                    <div class="order-summary-header">
-                        <div class="order-summary-title">Resumo do Pedido <span style="font-weight:400;">(1 item)</span>
-                        </div>
-                        <div class="order-summary-total">
-                            R$ <span id="summary-total">129,90</span>
-                        </div>
-                    </div>
+<div class="order-summary-header">
+    <div class="order-summary-title">Contribuição <span style="font-weight:400;">(Pix)</span></div>
+    <div class="order-summary-total">
+        R$ <span id="summary-total">0,00</span>
+    </div>
+</div>
 
-                    <div class="order-product">
-                        <div class="product-thumb">
-                            <img src="images/1.jpg" alt="Produto" />
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">
-                                Camisa Brasil 2026 - Copa do Mundo - Amarela
-                            </div>
-                            <div class="product-line">
-                                <span>Qtd: 1</span>
-                                <span><strong>R$ 129,90</strong></span>
-                            </div>
-                        </div>
-                    </div>
+<div class="card-subtitle" style="margin:10px 0 12px;">
+    Escolha o valor da sua contribuição e gere o Pix na hora.
+</div>
 
+<div class="form-field" style="margin-top:6px;">
+    <label for="valor-contribuicao" class="form-label">Valor da contribuição</label>
+    <div style="display:flex; gap:10px; align-items:center;">
+        <div style="background:#f2f4fb;border:1px solid var(--border-soft);border-radius:12px;padding:12px 14px;font-weight:700;">R$</div>
+        <input id="valor-contribuicao" class="form-input" type="text" inputmode="decimal" placeholder="Ex: 50" />
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:var(--text-muted);">
+        Mínimo sugerido: R$ 20,00.
+    </div>
+</div>
 
+<div class="order-values" style="margin-top:12px;">
+    <div class="order-values-row order-total-row">
+        <span>Total</span>
+        <span id="pix-total-mini"><strong>R$ 0,00</strong></span>
+    </div>
+</div>
 
-                    <div class="order-values" style="margin-top:8px;">
-                        <div class="order-values-row order-total-row">
-                            <span>Total</span>
-                            <span id="pix-total-mini"><strong>R$ 129,90</strong></span>
-                        </div>
-
-
-                    </div>
-
-                    <div class="order-highlight">
-                        <strong>Pedido com desconto exclusivo.</strong><br />
-                        Você ganhou Frete Grátis nesta compra!
-                    </div>
-                </div>
+<div class="order-highlight" style="margin-top:12px;">
+    <strong>Desconto válido somente nesta página.</strong><br />
+    Gere o Pix agora para garantir o valor.
+</div>
+</div>
 
                 <div class="card">
                     <div class="card-title">Dados pessoais</div>
@@ -1117,7 +1111,7 @@
                     </div>
 
                     <div class="form-field" style="margin-top:12px;">
-                        <div class="form-label">CPF do pagador</div>
+                        <div class="form-label">CPF do pagador <span style="font-weight:500;color:var(--text-muted);">(obrigatório para emissão do Pix)</span></div>
                         <input id="cpf-pagador" class="form-input" type="text" placeholder="CPF" />
                     </div>
 
@@ -1136,408 +1130,7 @@
                     </div>
 
 
-                    <button class="btn-main" onclick="validateStep1AndContinue()">Continuar</button>
-                </div>
-
-                <div class="benefits">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone caminhão (Frete Grátis) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="4" y="8" width="11" height="6" rx="1" ry="1"></rect>
-                                <path d="M13 9h4l3 3v3"></path>
-                                <circle cx="7" cy="17" r="1.6"></circle>
-                                <circle cx="17" cy="17" r="1.6"></circle>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Frete Grátis</div>
-                            <div class="benefit-text-sub">Para todo o Brasil em compras acima de R$ 59,90</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone escudo (Compra Segura) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M12 3.5 6 5.5v6c0 3.2 2.2 5.4 6 7 3.8-1.6 6-3.8 6-7v-6l-6-2z"></path>
-                                <path d="M9.5 11.5 11 13l3.5-3.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Compra Segura</div>
-                            <div class="benefit-text-sub">Seus dados protegidos e pagamento seguro</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone relógio (Entrega Rápida) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="7"></circle>
-                                <path d="M12 8v4l2.5 1.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Entrega Rápida</div>
-                            <div class="benefit-text-sub">Enviamos em até 24 horas após a confirmação</div>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- STEP 2 -->
-            <section id="screen-endereco" class="step-screen">
-                <div class="card">
-                    <div class="order-summary-header">
-                        <div class="order-summary-title">Resumo do Pedido <span style="font-weight:400;">(1 item)</span>
-                        </div>
-                        <div class="order-summary-total">
-                            R$ <span id="summary-total">129,90</span>
-                        </div>
-                    </div>
-
-                    <div class="order-product">
-                        <div class="product-thumb">
-                            <img src="images/1.jpg" alt="Imagem do Produto" />
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">
-                                Camisa Brasil 2026 - Copa do Mundo
-                            </div>
-                            <div class="product-line">
-                                <span>Qtd: 1</span>
-                                <span><strong>R$ 129,90</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="order-values" style="margin-top:8px;">
-                        <div class="order-values-row order-total-row">
-                            <span>Total</span>
-                            <span id="pix-total-mini"><strong>R$ 129,90</strong></span>
-                        </div>
-
-
-                    </div>
-
-                    <div class="order-highlight">
-                        <strong>Pedido com desconto exclusivo.</strong><br />
-                        Você ganhou Frete Grátis nesta compra!
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Endereço de entrega</div>
-
-                    <div class="form-field">
-                        <label for="cep" class="form-label">CEP</label>
-                        <input id="cep" class="form-input" type="text" placeholder="00000-000" />
-                    </div>
-
-                    <div class="form-field">
-                        <label for="rua" class="form-label">Rua</label>
-                        <input id="rua" class="form-input" type="text" placeholder="Rua, Avenida, etc." />
-                    </div>
-
-                    <div class="form-row-2">
-                        <div class="form-field">
-                            <label for="numero" class="form-label">Número</label>
-                            <input id="numero" class="form-input" type="text" placeholder="123" />
-                        </div>
-
-                        <div class="form-field">
-                            <label for="complemento" class="form-label">Complemento</label>
-                            <input id="complemento" class="form-input" type="text" placeholder="Apto, Bloco, etc." />
-                        </div>
-                    </div>
-
-                    <div class="form-field">
-                        <label for="bairro" class="form-label">Bairro</label>
-                        <input id="bairro" class="form-input" type="text" placeholder="Seu bairro" />
-                    </div>
-
-                    <div class="form-row-2">
-                        <div class="form-field">
-                            <label for="cidade" class="form-label">Cidade</label>
-                            <input id="cidade" class="form-input" type="text" placeholder="Sua cidade" />
-                        </div>
-
-                        <div class="form-field">
-                            <label for="estado" class="form-label">Estado</label>
-                            <input id="estado" class="form-input" type="text" placeholder="UF" />
-                        </div>
-                    </div>
-
-
-                    <div class="pix-benefits" style="margin-top:6px;">
-                        <div class="pix-benefit-line">
-                            <div class="benefit-icon">
-                                <!-- Ícone caminhão (Frete Grátis) -->
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="4" y="8" width="11" height="6" rx="1" ry="1"></rect>
-                                    <path d="M13 9h4l3 3v3"></path>
-                                    <circle cx="7" cy="17" r="1.6"></circle>
-                                    <circle cx="17" cy="17" r="1.6"></circle>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="pix-benefit-text-title">Frete Grátis - Correios ©</div>
-                                <div class="pix-benefit-text-sub">3 a 7 dias úteis — Grátis</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn-ghost" onclick="goToStep(1)">Voltar</button>
-                    <button class="btn-main" onclick="goToStep(3)">Continuar</button>
-                </div>
-
-                <div class="benefits">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone caminhão (Frete Grátis) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="4" y="8" width="11" height="6" rx="1" ry="1"></rect>
-                                <path d="M13 9h4l3 3v3"></path>
-                                <circle cx="7" cy="17" r="1.6"></circle>
-                                <circle cx="17" cy="17" r="1.6"></circle>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Frete Grátis</div>
-                            <div class="benefit-text-sub">Para todo o Brasil em compras acima de R$ 59,90</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone escudo (Compra Segura) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M12 3.5 6 5.5v6c0 3.2 2.2 5.4 6 7 3.8-1.6 6-3.8 6-7v-6l-6-2z"></path>
-                                <path d="M9.5 11.5 11 13l3.5-3.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Compra Segura</div>
-                            <div class="benefit-text-sub">Seus dados protegidos e pagamento seguro</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone relógio (Entrega Rápida) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="7"></circle>
-                                <path d="M12 8v4l2.5 1.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Entrega Rápida</div>
-                            <div class="benefit-text-sub">Enviamos em até 24 horas após a confirmação</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- STEP 3 -->
-            <section id="screen-pagamento" class="step-screen">
-                <div class="card">
-                    <div class="order-summary-header">
-                        <div class="order-summary-title">Resumo do Pedido <span style="font-weight:400;">(1 item)</span>
-                        </div>
-                        <div class="order-summary-total">
-                            R$ <span id="summary-total">129,90</span>
-                        </div>
-                    </div>
-
-                    <div class="order-product">
-                        <div class="product-thumb">
-                            <img src="images/1.jpg" alt="Produto" />
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">
-                                Camisa Brasil 2026 - Copa do Mundo
-                            </div>
-                            <div class="product-line">
-                                <span>Qtd: 1</span>
-                                <span><strong>R$ 129,90</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="order-values" style="margin-top:8px;">
-                        <div class="order-values-row order-total-row">
-                            <span>Total</span>
-                            <span id="pix-total-mini"><strong>R$ 129,90</strong></span>
-                        </div>
-
-
-                    </div>
-
-                    <div class="order-highlight">
-                        <strong>Pedido com desconto exclusivo.</strong><br />
-                        Você ganhou Frete Grátis nesta compra!
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Pagamento</div>
-                    <div class="card-subtitle">Escolha a forma de pagamento</div>
-
-                    <div class="payment-methods">
-                        <div class="pay-option" id="opt-credit">
-                            <div class="pay-option-header">
-                                <div>💳</div>
-                                <div>
-                                    <div class="pay-option-label-main">Cartão de Crédito</div>
-                                    <div class="pay-option-label-sub">Parcele em até 12x</div>
-                                </div>
-                                <div class="pay-option-circle"></div>
-                            </div>
-                        </div>
-
-                        <div class="pay-option active" id="opt-pix">
-                            <span class="pay-badge">Aprovação Imediata</span>
-                            <div class="pay-option-header">
-                                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_4004_11336)">
-                                        <path
-                                            d="M4.04065 4.69981L4.40147 4.33907L4.04065 4.69981ZM5.16368 4.28406L8.205 1.24341L8.20502 1.24338C8.68104 0.767401 9.32664 0.5 9.99981 0.5C10.673 0.5 11.3186 0.767395 11.7946 1.24337C11.7946 1.24337 11.7946 1.24338 11.7946 1.24338L14.7867 4.23547C14.5312 4.27803 14.2808 4.34956 14.0404 4.44908C13.623 4.62186 13.244 4.8756 12.9252 5.19563C12.925 5.19582 12.9248 5.19601 12.9247 5.1962L9.91516 8.20653C9.91511 8.20658 9.91506 8.20663 9.91501 8.20668C9.90409 8.21749 9.88935 8.22355 9.87398 8.22355C9.85861 8.22355 9.84386 8.21748 9.83294 8.20667C9.8329 8.20662 9.83285 8.20657 9.8328 8.20653L6.83428 5.20801C6.83416 5.20788 6.83403 5.20776 6.8339 5.20763C6.51515 4.88732 6.1361 4.63335 5.71863 4.46037C5.53856 4.38575 5.35289 4.32685 5.16368 4.28406ZM1.24338 8.20502L1.24343 8.20497L3.36531 6.08231H4.40085C4.81352 6.08357 5.20908 6.24734 5.50187 6.53815C5.50202 6.53829 5.50217 6.53844 5.50232 6.53859L8.50126 9.53754L8.50178 9.53805C8.7168 9.75244 8.97685 9.9113 9.25965 10.0054C8.98171 10.0962 8.7249 10.2485 8.50962 10.4539L8.50952 10.4538L8.50126 10.4621L5.50232 13.461C5.50212 13.4612 5.50193 13.4614 5.50173 13.4616C5.20896 13.7523 4.81345 13.9161 4.40085 13.9173H3.36609L1.24338 11.7946C1.24338 11.7946 1.24337 11.7946 1.24337 11.7946C0.767395 11.3186 0.5 10.673 0.5 9.99981C0.5 9.32665 0.767401 8.68104 1.24338 8.20502ZM11.2367 10.4539C11.0213 10.2484 10.7643 10.0961 10.4862 10.0053C10.7689 9.91114 11.0288 9.75234 11.2437 9.53805L11.2442 9.53758L14.2551 6.5275C14.2552 6.52741 14.2553 6.52732 14.2553 6.52723C14.548 6.23604 14.9436 6.07199 15.3564 6.07065H16.621L18.7554 8.20502C18.7554 8.20502 18.7554 8.20503 18.7554 8.20504C19.2314 8.68106 19.4988 9.32665 19.4988 9.99981C19.4988 10.673 19.2314 11.3186 18.7554 11.7946C18.7554 11.7946 18.7554 11.7946 18.7554 11.7946L16.6219 13.9281H15.3562C14.9436 13.927 14.5482 13.7633 14.2555 13.4725C14.2553 13.4723 14.2551 13.4721 14.2549 13.4719L11.245 10.4621L11.2451 10.462L11.2367 10.4539ZM8.20492 18.757L5.16424 15.7156C5.35316 15.6729 5.53856 15.6141 5.71838 15.5397C6.13575 15.3669 6.51477 15.1132 6.83356 14.7932C6.83376 14.793 6.83395 14.7928 6.83414 14.7926L9.82766 11.7991C9.84042 11.7878 9.85689 11.7816 9.87398 11.7816C9.89107 11.7816 9.90754 11.7878 9.92031 11.7991L12.9246 14.8034C12.9248 14.8035 12.9249 14.8037 12.925 14.8038C13.2438 15.124 13.6229 15.3778 14.0404 15.5506C14.281 15.6502 14.5317 15.7218 14.7874 15.7643L11.7947 18.757C11.7947 18.757 11.7946 18.7571 11.7946 18.7571C11.3185 19.2329 10.6729 19.5001 9.99981 19.5001C9.32674 19.5001 8.6812 19.2329 8.20507 18.7571C8.20502 18.7571 8.20497 18.757 8.20492 18.757ZM15.3571 15.8106H15.4481L12.1481 19.1106L15.3571 15.8106Z"
-                                            stroke="black"></path>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_4004_11336">
-                                            <rect width="20" height="20" fill="white"></rect>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                                <div>
-                                    <div class="pay-option-label-main">PIX</div>
-                                    <div class="pay-option-label-sub">Pagamento instantâneo</div>
-                                </div>
-                                <div class="pay-option-circle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pix-card">
-                        <div class="card-title" style="margin-bottom:6px;">Pagamento via PIX</div>
-
-                        <div class="pix-pricing">
-
-
-                            <div class="pix-pricing-row total">
-                                <span>Valor com desconto:</span>
-                                <span id="pix-total-main">R$ 129,90</span>
-                            </div>
-                        </div>
-
-                        <div class="pix-benefits">
-
-                            <div class="pix-benefit-line">
-
-                                <div>
-                                    <div class="pix-benefit-text-title">Aprovação instantânea</div>
-                                    <div class="pix-benefit-text-sub">Liberação imediata do pedido</div>
-                                </div>
-                            </div>
-
-                            <div class="pix-benefit-line">
-
-                                <div>
-                                    <div class="pix-benefit-text-title">Sem custos extras</div>
-                                    <div class="pix-benefit-text-sub">Transferência gratuita</div>
-                                </div>
-                            </div>
-
-                            <div class="pix-benefit-line">
-
-                                <div>
-                                    <div class="pix-benefit-text-title">100% Seguro</div>
-                                    <div class="pix-benefit-text-sub">Desenvolvido pelo Banco Central</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-
-                        <button class="btn-main" onclick="gerarPix()">Finalizar Compra</button>
-                        <button class="btn-ghost" onclick="goToStep(2)">Voltar</button>
-                    </div>
-                </div>
-
-                <div class="benefits">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone caminhão (Frete Grátis) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="4" y="8" width="11" height="6" rx="1" ry="1"></rect>
-                                <path d="M13 9h4l3 3v3"></path>
-                                <circle cx="7" cy="17" r="1.6"></circle>
-                                <circle cx="17" cy="17" r="1.6"></circle>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Frete Grátis</div>
-                            <div class="benefit-text-sub">Para todo o Brasil em compras acima de R$ 59,90</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone escudo (Compra Segura) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M12 3.5 6 5.5v6c0 3.2 2.2 5.4 6 7 3.8-1.6 6-3.8 6-7v-6l-6-2z"></path>
-                                <path d="M9.5 11.5 11 13l3.5-3.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Compra Segura</div>
-                            <div class="benefit-text-sub">Seus dados protegidos e pagamento seguro</div>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <!-- Ícone relógio (Entrega Rápida) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="7"></circle>
-                                <path d="M12 8v4l2.5 1.5"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="benefit-text-title">Entrega Rápida</div>
-                            <div class="benefit-text-sub">Enviamos em até 24 horas após a confirmação</div>
-                        </div>
-                    </div>
+                    <button class="btn-main" onclick="validateStep1AndContinue()">Gerar Pix</button>
                 </div>
             </section>
 
@@ -1906,9 +1499,12 @@
 
     <script>
         // ===== CONFIG GERAL =====
-        const PIX_AMOUNT_CENTS = 12982; // 
+        let PIX_AMOUNT_CENTS = 0; // valor em centavos (definido pelo campo "Valor da contribuição")
 
-        // ===== BLACKCAT VIA BACKEND =====
+        // valor mínimo (em centavos)
+        const MIN_PIX_AMOUNT_CENTS = 2000; // R$ 20,00
+
+// ===== BLACKCAT VIA BACKEND =====
         // Agora o front chama apenas /api/blackcat e /api/blackcat-status e não expõe keys.
 
         // ===== UTMIFY VIA BACKEND =====
@@ -1953,14 +1549,22 @@
 
         // ===== STEPS =====
         function goToStep(stepNumber) {
-            const screens = { 1: 'screen-identificacao', 2: 'screen-endereco', 3: 'screen-pagamento', 4: 'screen-pix' };
+            // Checkout 1 etapa: mantém apenas tela principal (1) e tela do Pix (4)
+            const screenMap = {
+                1: 'screen-identificacao',
+                4: 'screen-pix'
+            };
+            const screenId = screenMap[stepNumber];
+            if (!screenId) return;
+
             document.querySelectorAll('.step-screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screens[stepNumber]).classList.add('active');
-            document.querySelectorAll('.step-indicator').forEach(el => {
-                const label = Number(el.getAttribute('data-step-label'));
-                if (label <= 3) {
-                    el.classList.toggle('active', label === stepNumber);
-                }
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+
+            // Stepper fica oculto, mas mantemos compatibilidade
+            document.querySelectorAll('.step-indicator').forEach(el => el.classList.remove('active'));
+        }
+
             });
         }
 
@@ -1997,10 +1601,6 @@
         // ===== CEP VIA VIACEP =====
         async function buscarCEP() {
             const cepCampo = document.getElementById('cep');
-            const rua = document.getElementById('rua');
-            const bairro = document.getElementById('bairro');
-            const cidade = document.getElementById('cidade');
-            const estado = document.getElementById('estado');
 
             const cep = cepCampo.value.replace(/\D/g, '');
             if (cep.length !== 8) return;
@@ -2071,8 +1671,8 @@
                     country: 'BR'
                 },
                 products: [{
-                    id: 'combo-black-friday',
-                    name: 'Colar Pérola Negra - 7mm',
+                    id: 'contribuicao-pix',
+                    name: 'Contribuição (Pix)',
                     planId: null,
                     planName: null,
                     quantity: 1,
@@ -2157,7 +1757,7 @@
                         fbq('track', 'Purchase', {
                             value: value,
                             currency: 'BRL',
-                            contents: [{ id: 'combo-black-friday', quantity: 1 }],
+                            contents: [{ id: 'contribuicao-pix', quantity: 1 }],
                             content_type: 'product',
                             order_id: orderRef
                         });
@@ -2213,13 +1813,8 @@
                 const cpf = document.getElementById('cpf-pagador').value || '95838040025';
                 const cpfDigits = cpf.replace(/\D/g, '');
 
-                const cep = (document.getElementById('cep').value || '').replace(/\D/g, '');
-                const rua = document.getElementById('rua').value || '';
-                const numero = document.getElementById('numero').value || '';
-                const complemento = document.getElementById('complemento').value || '';
-                const bairro = document.getElementById('bairro').value || '';
-                const cidade = document.getElementById('cidade').value || '';
-                const estado = document.getElementById('estado').value || '';
+                // Checkout de contribuição (1 etapa): sem endereço e sem entrega física
+                const isPhysical = false;
 
                 // Se tiver endereço preenchido, tratamos como produto físico (tangible:true) e enviamos shipping (obrigatório pela doc).
                 const isPhysical = Boolean(cep || rua || numero || bairro || cidade || estado);
@@ -2255,25 +1850,12 @@
                         document: { type: 'cpf', number: cpfDigits }
                     },
                     items: [{
-                        title: 'Colar Pérola Negra - 7mm',
+                        title: 'Contribuição',
                         quantity: 1,
                         tangible: isPhysical,
                         unitPrice: PIX_AMOUNT_CENTS,
                         externalRef: 'item-1'
-                    }],
-                    ...(isPhysical ? {
-                        shipping: {
-                            name: nome,
-                            street: rua,
-                            number: numero,
-                            neighborhood: bairro,
-                            city: cidade,
-                            state: estado,
-                            zipCode: cep,
-                            complement: complemento || undefined
-                        }
-                    } : {})
-                };
+                    }]};
 
                 const resp = await fetch('/api/blackcat', {
                     method: 'POST',
@@ -2411,8 +1993,57 @@
             });
         }
 
-        // ===== INIT LISTENERS =====
+        
+        function parseBRLToCents(value) {
+            if (value === null || value === undefined) return 0;
+            let v = String(value).trim();
+            if (!v) return 0;
+
+            v = v.replace(/[^\d,\.]/g, '');
+
+            if (v.includes(',')) {
+                v = v.replace(/\./g, '');
+                const parts = v.split(',');
+                const reais = (parts[0] || '0').replace(/\D/g, '') || '0';
+                const cent = (parts[1] || '');
+                const cent2 = (cent + '00').slice(0, 2).replace(/\D/g, '') || '0';
+                return (Number(reais) * 100) + Number(cent2);
+            }
+
+            if (v.includes('.')) {
+                const parts = v.split('.');
+                if (parts.length === 2) {
+                    const reais = (parts[0] || '0').replace(/\D/g, '') || '0';
+                    const cent2 = ((parts[1] || '') + '00').slice(0, 2).replace(/\D/g, '') || '0';
+                    return (Number(reais) * 100) + Number(cent2);
+                }
+                v = v.replace(/\D/g, '');
+                return Number(v) * 100;
+            }
+
+            v = v.replace(/\D/g, '');
+            return Number(v) * 100;
+        }
+
+        function atualizarTotaisUI() {
+            const valor = formatarValorBRLcentavos(PIX_AMOUNT_CENTS || 0);
+            const summaryTotalEl = document.getElementById('summary-total');
+            if (summaryTotalEl) summaryTotalEl.innerText = valor.replace('R$ ', '');
+
+            const mini = document.getElementById('pix-total-mini');
+            if (mini) mini.innerHTML = '<strong>' + valor + '</strong>';
+
+            const main = document.getElementById('pix-total-main');
+            if (main) main.innerText = valor;
+
+            const final = document.getElementById('pix-total-final');
+            if (final) final.innerText = valor;
+        }
+
+// ===== INIT LISTENERS =====
         (function init() {
+            atualizarTotaisUI();
+
             const optCredit = document.getElementById('opt-credit');
             const optPix = document.getElementById('opt-pix');
 
@@ -2435,24 +2066,28 @@
                 e.target.value = formatPhone(e.target.value);
             });
 
-            const cpfInput = document.getElementById('cpf-pagador');
+            
+
+            const valorInput = document.getElementById('valor-contribuicao');
+            if (valorInput) {
+                valorInput.addEventListener('input', () => {
+                    const cents = parseBRLToCents(valorInput.value);
+                    if (!isNaN(cents)) {
+                        PIX_AMOUNT_CENTS = cents;
+                        atualizarTotaisUI();
+                    }
+                });
+            }
+const cpfInput = document.getElementById('cpf-pagador');
             cpfInput.addEventListener('input', e => {
                 e.target.value = formatCPF(e.target.value);
-            });
-
-            const cepInput = document.getElementById('cep');
-            cepInput.addEventListener('input', e => {
-                e.target.value = formatCEP(e.target.value);
-            });
-            cepInput.addEventListener('blur', buscarCEP);
-
-            // FACEBOOK PIXEL: InitiateCheckout assim que o checkout abrir
+            });// FACEBOOK PIXEL: InitiateCheckout assim que o checkout abrir
             if (window.fbq) {
                 fbq('track', 'InitiateCheckout', {
                     value: PIX_AMOUNT_CENTS / 100,
                     currency: 'BRL',
                     num_items: 1,
-                    contents: [{ id: 'combo-black-friday', quantity: 1 }],
+                    contents: [{ id: 'contribuicao-pix', quantity: 1 }],
                     content_type: 'product'
                 });
             }
@@ -2513,13 +2148,49 @@
             const email = document.getElementById('email').value.trim();
             const cpf = document.getElementById('cpf-pagador').value.replace(/\D/g, '');
             const whatsapp = document.getElementById('whatsapp').value.replace(/\D/g, '');
+            const valorStr = (document.getElementById('valor-contribuicao').value || '').trim();
 
-            // Regras mínimas (pra não deixar passar payload inválido)
             if (!nome || nome.length < 5) {
                 alert('Preencha seu nome completo.');
                 document.getElementById('nome-completo').focus();
                 return;
             }
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Preencha um e-mail válido.');
+                document.getElementById('email').focus();
+                return;
+            }
+
+            if (!cpf || cpf.length !== 11) {
+                alert('Preencha um CPF válido (11 dígitos).');
+                document.getElementById('cpf-pagador').focus();
+                return;
+            }
+
+            if (!whatsapp || whatsapp.length < 10) {
+                alert('Preencha seu WhatsApp com DDD.');
+                document.getElementById('whatsapp').focus();
+                return;
+            }
+
+            const amountCents = parseBRLToCents(valorStr);
+            if (!amountCents || isNaN(amountCents)) {
+                alert('Preencha um valor válido para a contribuição.');
+                document.getElementById('valor-contribuicao').focus();
+                return;
+            }
+
+            if (amountCents < MIN_PIX_AMOUNT_CENTS) {
+                alert('O valor mínimo é R$ 20,00.');
+                document.getElementById('valor-contribuicao').focus();
+                return;
+            }
+
+            PIX_AMOUNT_CENTS = amountCents;
+            atualizarTotaisUI();
+            gerarPix();
+        }
 
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 alert('Preencha um e-mail válido.');

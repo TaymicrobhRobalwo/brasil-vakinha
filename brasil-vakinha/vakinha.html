@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vakinha PIX - Doação</title>
+
+    <!-- QRCode (leve e confiável) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+    <style>
+        :root {
+            --green: #53c268;
+            --green-2: #39b957;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --bg: #ffffff;
+            --soft: #f7f7f7;
+            --soft2: #f3f4f6;
+            --card: #ffffff;
+            --shadow: 0 10px 25px rgba(0, 0, 0, .07);
+            --radius: 16px;
+            --radius2: 12px;
+            --w: 420px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background: #fff;
+        }
+
+        /* Topbar */
+        .topbar {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            color: var(--green);
+            letter-spacing: .2px;
+        }
+
+        .brand .logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(180deg, var(--green) 0%, var(--green-2) 100%);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: #fff;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            background: var(--soft2)
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            display: block;
+            fill: currentColor;
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 16px 14px 40px;
+        }
+
+        .mini-link {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 6px 0 14px;
+        }
+
+        .mini-link a {
+            color: #2563eb;
+            text-decoration: none
+        }
+
+        .mini-link a:hover {
+            text-decoration: underline
+        }
+
+        h1 {
+            font-size: 18px;
+            margin: 6px 0 14px;
+            font-weight: 800;
+        }
+
+        /* ONG Card */
+        .ong-card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .ong-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+        }
+
+        .ong-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--soft2);
+            display: grid;
+            place-items: center;
+            color: #16a34a;
+            font-weight: 900;
+            font-size: 18px;
+            flex: 0 0 auto;
+        }
+
+        .ong-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ong-name {
+            font-weight: 900;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .ong-loc {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .ong-tag {
+            margin-top: 2px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .ong-drop {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ong-drop .chev {
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--muted);
+            border-left: 0;
+            border-top: 0;
+            transform: rotate(45deg);
+            margin-top: -2px;
+        }
+
+        .ong-media {
+            border-top: 1px solid var(--line);
+            padding: 12px 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .thumb {
+            width: 86px;
+            height: 54px;
+            border-radius: 12px;
+            background: #111827;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .thumb::after {
+            content: "SOS ENCHENTES";
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
+            font-size: 10px;
+            opacity: .9;
+        }
+
+        .media-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .media-title {
+            font-weight: 900;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .media-id {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Form */
+        .form {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card);
+            box-shadow: var(--shadow);
+            padding: 14px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #111827;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus {
+            border-color: #9ae6b4;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, .12);
+        }
+
+        .money {
+            display: flex;
+            gap: 0;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 44px;
+            background: #fff;
+        }
+
+        .money span {
+            width: 54px;
+            display: grid;
+            place-items: center;
+            color: #111827;
+            font-weight: 900;
+            background: var(--soft2);
+            border-right: 1px solid var(--line);
+            height: 100%;
+            font-size: 14px;
+        }
+
+        .money input {
+            border: 0;
+            border-radius: 0;
+            height: 100%;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 900;
+            margin: 12px 0 8px;
+        }
+
+        /* Payment method */
+        .pay-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .pix-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--green);
+            color: #fff;
+            font-weight: 900;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .radio-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: inset 0 0 0 3px rgba(0, 0, 0, .0);
+        }
+
+        .check {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin: 12px 0;
+        }
+
+        .check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--green);
+        }
+
+        .check .txt {
+            font-size: 13px;
+            line-height: 1.25rem;
+        }
+
+        .check .sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+            line-height: 1.1rem;
+        }
+
+        /* Turbine */
+        .boost {
+            border: 1px solid #d1fae5;
+            background: #ecfdf5;
+            border-radius: 14px;
+            padding: 10px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 8px 0 10px;
+        }
+
+        .boost-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .boost-badge {
+            background: var(--green);
+            color: #fff;
+            font-weight: 900;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .boost-price {
+            font-weight: 900;
+            color: #111827;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .line {
+            height: 1px;
+            background: var(--line);
+            margin: 12px 0;
+        }
+
+        .totals {
+            font-size: 13px;
+            color: #111827;
+            margin-top: 4px;
+        }
+
+        .totals .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .totals .row span:last-child {
+            font-weight: 900
+        }
+
+        .totals .row.muted {
+            color: var(--muted)
+        }
+
+        .totals .row.total span:last-child {
+            font-size: 14px
+        }
+
+        .totals .row.total {
+            margin-top: 10px
+        }
+
+        .cta {
+            margin-top: 12px;
+            height: 50px;
+            border-radius: 14px;
+            border: 0;
+            width: 100%;
+            background: var(--green);
+            color: #fff;
+            font-weight: 1000;
+            font-size: 15px;
+            letter-spacing: .3px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(34, 197, 94, .20);
+        }
+
+        .cta:hover {
+            background: var(--green-2)
+        }
+
+        .cta:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .legal {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.2rem;
+        }
+
+        .legal a {
+            color: #2563eb;
+            text-decoration: none
+        }
+
+        .legal a:hover {
+            text-decoration: underline
+        }
+
+        .security {
+            margin-top: 12px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+        }
+
+        .shield {
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            background: #eafff0;
+            display: grid;
+            place-items: center;
+            color: var(--green);
+            border: 1px solid #c7f9d4;
+            flex: 0 0 auto;
+        }
+
+        .security .t {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.1rem;
+        }
+
+        .security .t b {
+            color: #111827
+        }
+
+        /* Modal PIX */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, .55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 50;
+        }
+
+        .modal {
+            width: min(520px, 100%);
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .25);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        .modal-head {
+            padding: 14px 14px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .modal-head h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 1000;
+        }
+
+        .close {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            background: var(--soft2)
+        }
+
+        .modal-body {
+            padding: 14px
+        }
+
+        .pix-grid {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .qrbox {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 10px;
+            background: #fff;
+            display: grid;
+            place-items: center;
+            min-height: 190px;
+        }
+
+        .pix-details {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 12px;
+            background: var(--soft);
+        }
+
+        .pix-details .k {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .pix-details .v {
+            font-size: 14px;
+            font-weight: 1000;
+            margin: 2px 0 10px;
+        }
+
+        .copy {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .copy input {
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            padding: 0 10px;
+            font-size: 12px;
+            background: #fff;
+        }
+
+        .copy button {
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            padding: 0 12px;
+            white-space: nowrap;
+        }
+
+        .copy button:hover {
+            background: var(--soft2)
+        }
+
+        .status {
+            margin-top: 12px;
+            border: 1px dashed #c7f9d4;
+            background: #ecfdf5;
+            border-radius: 14px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #065f46;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .status b {
+            color: #064e3b
+        }
+
+        .status small {
+            color: #047857
+        }
+
+        .modal-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            height: 46px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: #fff;
+            cursor: pointer;
+            font-weight: 1000;
+        }
+
+        .btn.primary {
+            border: 0;
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(34, 197, 94, .20);
+        }
+
+        .btn.primary:hover {
+            background: var(--green-2)
+        }
+
+        .btn:hover {
+            background: var(--soft2)
+        }
+
+        .hint {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.2rem;
+        }
+
+        @media (max-width: 560px) {
+            .pix-grid {
+                grid-template-columns: 1fr
+            }
+
+            .qrbox {
+                min-height: 220px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="logo">V</div>
+            <div>vakinha</div>
+        </div>
+
+        <div class="top-actions">
+            <button class="icon-btn" type="button" aria-label="Buscar">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M10 4a6 6 0 104.472 10.03l3.749 3.75 1.414-1.415-3.75-3.749A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z" />
+                </svg>
+            </button>
+            <button class="icon-btn" type="button" aria-label="Menu">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="mini-link">Já doou no Vakinha? <a href="#" onclick="return false;">Clique aqui</a></div>
+
+        <h1>Você vai ajudar uma vakinha da ONG Instituto Vakinha</h1>
+
+        <section class="ong-card">
+            <div class="ong-top">
+                <div class="ong-avatar">V</div>
+                <div class="ong-info">
+                    <p class="ong-name">Instituto Vakinha</p>
+                    <p class="ong-loc">Porto Alegre / Rio Grande do Sul</p>
+                    <p class="ong-tag">Assistência Social</p>
+                </div>
+                <div class="ong-drop">
+                    Conheça a ONG <span class="chev"></span>
+                </div>
+            </div>
+
+            <div class="ong-media">
+                <div class="thumb"></div>
+                <div class="media-info">
+                    <p class="media-title">SOS Juiz de Fora</p>
+                    <p class="media-id">ID 5965746</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="form" id="donationForm">
+            <div class="field">
+                <label for="phone">Telefone (WhatsApp)</label>
+                <input id="phone" inputmode="tel" placeholder="(00) 00000-0000" autocomplete="tel" />
+            </div>
+
+            <div class="field">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" placeholder="Insira o seu melhor e-mail" autocomplete="email" />
+            </div>
+
+            <div class="field">
+                <label for="cpf">CPF</label>
+                <input id="cpf" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off" />
+            </div>
+
+            <div class="field">
+                <label for="name">Nome completo</label>
+                <input id="name" placeholder="Insira seu nome de registro" autocomplete="name" />
+            </div>
+
+            <div class="field">
+                <label>Valor da contribuição</label>
+                <div class="money">
+                    <span>R$</span>
+                    <input id="amount" inputmode="decimal" placeholder="50,00" value="50,00" />
+                </div>
+            </div>
+
+            <div class="section-title">Forma de pagamento</div>
+            <div class="pay-row">
+                <div class="pix-pill"><span class="radio-dot"></span> Pix</div>
+            </div>
+
+            <div class="check">
+                <input id="monthly" type="checkbox" />
+                <div class="txt">
+                    <div><b>Quero doar mensalmente</b></div>
+                    <div class="sub">Você será lembrado mensalmente sobre o pagamento. Cancele quando quiser.</div>
+                </div>
+            </div>
+
+            <div class="boost">
+                <div class="boost-left">
+                    <input id="boost" type="checkbox" style="width:18px;height:18px;accent-color:var(--green)" />
+                    <div class="boost-badge">TURBINE SUA DOAÇÃO</div>
+                </div>
+                <div class="boost-price" id="boostPrice">+R$ 6,99</div>
+            </div>
+
+            <div class="totals">
+                <div class="row muted"><span>Contribuição:</span><span id="subTotal">R$ 50,00</span></div>
+                <div class="row muted"><span>Total:</span><span id="total">R$ 50,00</span></div>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="check">
+                <input id="updates" type="checkbox" />
+                <div class="txt">
+                    <div><b>Quero receber atualizações</b> desta vakinha e de outras iniciativas.</div>
+                    <div class="sub">Respeitamos sua privacidade, enviando apenas e-mails e WhatsApp importantes.</div>
+                </div>
+            </div>
+
+            <button class="cta" id="btnPay" type="button">CONTRIBUIR</button>
+
+            <div class="legal">
+                Ao clicar no botão acima você declara que é maior de 18 anos, leu e está de acordo com os
+                <a href="#" onclick="return false;">Termos</a>, <a href="#" onclick="return false;">Taxas e Prazos</a>
+                e permite o compartilhamento dos dados de e-mail e telefone com a ONG.
+            </div>
+
+            <div class="security">
+                <div class="shield" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4zm0 2.2L6 7v5c0 4 2.6 7.6 6 8 3.4-.4 6-4 6-8V7l-6-2.8z" />
+                    </svg>
+                </div>
+                <div class="t"><b>SELO DE SEGURANÇA</b><br />Garantimos uma experiência segura para todos os nossos
+                    doadores.</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL PIX -->
+    <div class="modal-backdrop" id="pixModal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pixTitle">
+            <div class="modal-head">
+                <h2 id="pixTitle">Pagamento via PIX</h2>
+                <button class="close" id="closeModal" type="button" aria-label="Fechar">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="pix-grid">
+                    <div class="qrbox">
+                        <div id="qrcode"></div>
+                    </div>
+
+                    <div class="pix-details">
+                        <p class="k">Valor</p>
+                        <div class="v" id="pixValue">R$ 0,00</div>
+
+                        <p class="k">Identificador</p>
+                        <div class="v" id="pixId">—</div>
+
+                        <p class="k">Copia e Cola</p>
+                        <div class="copy">
+                            <input id="pixCopy" readonly value="" />
+                            <button type="button" id="btnCopy">Copiar</button>
+                        </div>
+
+                        <div class="status" id="pixStatusBox">
+                            <div><b>Status:</b> <span id="pixStatus">Aguardando pagamento</span></div>
+                            <small id="pixTimer">—</small>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button class="btn" type="button" id="btnCheck">Já paguei (verificar)</button>
+                            <button class="btn primary" type="button" id="btnOk">Ok</button>
+                        </div>
+
+                        <div class="hint">
+                            Dica: após pagar no app do banco, este modal confirma automaticamente quando a Blackcat
+                            marcar como <b>paid</b>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================
+        // Helpers UI / Máscaras
+        // =========================
+        const el = (id) => document.getElementById(id);
+
+        function onlyDigits(s) { return (s || "").replace(/\D+/g, ""); }
+
+        function formatCPF(v) {
+            v = onlyDigits(v).slice(0, 11);
+            v = v.replace(/^(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+            v = v.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+            return v;
+        }
+
+        function formatPhone(v) {
+            v = onlyDigits(v).slice(0, 11);
+            if (v.length <= 10) {
+                v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+                v = v.replace(/(\d{4})(\d)/, "$1-$2");
+            } else {
+                v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+                v = v.replace(/(\d{5})(\d)/, "$1-$2");
+            }
+            return v;
+        }
+
+        function parseBRLToCents(str) {
+            // "50,00" -> 20000
+            str = (str || "").trim();
+            str = str.replace(/\./g, "").replace(",", ".");
+            const n = Number(str);
+            if (!isFinite(n) || n <= 0) return 0;
+            return Math.round(n * 100);
+        }
+
+        function formatCentsToBRL(cents) {
+            const n = (cents || 0) / 100;
+            return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        }
+
+        function setLoading(btn, loading) {
+            btn.disabled = !!loading;
+            btn.textContent = loading ? "PROCESSANDO..." : "CONTRIBUIR";
+        }
+
+        // =========================
+        // State / Totais
+        // =========================
+        const BOOST_CENTS = 699;
+
+        function recalc() {
+            const base = parseBRLToCents(el("amount").value);
+            const boost = el("boost").checked ? BOOST_CENTS : 0;
+            const total = base + boost;
+
+            el("subTotal").textContent = formatCentsToBRL(base);
+            el("total").textContent = formatCentsToBRL(total);
+            return { base, boost, total };
+        }
+
+        // =========================
+        // PIX Modal logic
+        // =========================
+        let pollTimer = null;
+        let expiresAtMs = null;
+        let currentTxId = null;
+
+        function openModal() {
+            el("pixModal").style.display = "flex";
+        }
+        function closeModal() {
+            el("pixModal").style.display = "none";
+            stopPolling();
+            clearQr();
+        }
+        function clearQr() {
+            const q = el("qrcode");
+            q.innerHTML = "";
+        }
+
+        function startPolling() {
+            stopPolling();
+            pollTimer = setInterval(async () => {
+                if (!currentTxId) return;
+
+                // contador de expiração (se tiver)
+                if (expiresAtMs) {
+                    const left = Math.max(0, expiresAtMs - Date.now());
+                    const mm = String(Math.floor(left / 60000)).padStart(2, "0");
+                    const ss = String(Math.floor((left % 60000) / 1000)).padStart(2, "0");
+                    el("pixTimer").textContent = left > 0 ? `Expira em ${mm}:${ss}` : "Expirado";
+                }
+
+                // consulta status
+                const st = await checkStatus(currentTxId, false);
+                if (st === "paid" || st === "approved" || st === "confirmed") {
+                    el("pixStatus").textContent = "Pago ✅";
+                    stopPolling();
+                }
+            }, 5000);
+        }
+
+        function stopPolling() {
+            if (pollTimer) clearInterval(pollTimer);
+            pollTimer = null;
+        }
+
+        async function checkStatus(txId, showAlerts) {
+            try {
+                const r = await fetch(`/api/blackcat-status?id=${encodeURIComponent(txId)}`, { method: "GET" });
+                const data = await r.json();
+
+                if (!r.ok) throw new Error(data?.error || "Falha ao consultar status");
+
+                const status = (data.status || "").toLowerCase();
+                if (status) {
+                    el("pixStatus").textContent = status;
+                    if (showAlerts && (status === "paid" || status === "approved" || status === "confirmed")) {
+                        alert("Pagamento confirmado! ✅");
+                    } else if (showAlerts) {
+                        alert(`Status atual: ${status}`);
+                    }
+                }
+                return status;
+            } catch (err) {
+                if (showAlerts) alert(err.message || "Erro ao consultar");
+                return "";
+            }
+        }
+
+        function renderQrFromPayload(payload) {
+            clearQr();
+            // qrcodejs precisa que o script já tenha carregado
+            // se a lib ainda não carregou, aguarda um pouco
+            const tryRender = () => {
+                if (!window.QRCode) return setTimeout(tryRender, 50);
+                new QRCode(el("qrcode"), {
+                    text: payload,
+                    width: 160,
+                    height: 160,
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            };
+            tryRender();
+        }
+
+        // =========================
+        // Submit -> cria PIX (Blackcat)
+        // =========================
+        async function createPix() {
+            const phone = el("phone").value.trim();
+            const email = el("email").value.trim();
+            const cpf = el("cpf").value.trim();
+            const name = el("name").value.trim();
+
+            const { total } = recalc();
+
+            // validações (mínimas)
+            if (onlyDigits(phone).length < 10) throw new Error("Preencha um WhatsApp válido.");
+            if (!email || !email.includes("@")) throw new Error("Preencha um e-mail válido.");
+            if (onlyDigits(cpf).length !== 11) throw new Error("Preencha um CPF válido.");
+            if (name.length < 3) throw new Error("Preencha seu nome completo.");
+            if (total < 100) throw new Error("Valor mínimo: R$ 1,00.");
+
+            const payload = {
+                amount_cents: total,
+                payer: {
+                    name,
+                    email,
+                    phone: onlyDigits(phone),
+                    cpf: onlyDigits(cpf)
+                },
+                metadata: {
+                    monthly: !!el("monthly").checked,
+                    wants_updates: !!el("updates").checked,
+                    boost: !!el("boost").checked,
+                    campaign: "sos-juiz-de-fora",
+                    ong: "instituto-vakinha"
+                }
+            };
+
+            const r = await fetch("/api/blackcat-create-pix", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await r.json();
+            if (!r.ok) throw new Error(data?.error || "Não foi possível gerar o PIX.");
+
+            return data;
+        }
+
+        // =========================
+        // Events
+        // =========================
+        document.addEventListener("DOMContentLoaded", () => {
+            el("cpf").addEventListener("input", (e) => e.target.value = formatCPF(e.target.value));
+            el("phone").addEventListener("input", (e) => e.target.value = formatPhone(e.target.value));
+
+            el("amount").addEventListener("input", () => {
+                // deixa o usuário digitar livre; só recalcula
+                recalc();
+            });
+
+            el("boost").addEventListener("change", recalc);
+            recalc();
+
+            el("closeModal").addEventListener("click", closeModal);
+            el("btnOk").addEventListener("click", closeModal);
+
+            el("btnCopy").addEventListener("click", async () => {
+                const v = el("pixCopy").value;
+                if (!v) return;
+                await navigator.clipboard.writeText(v);
+                el("btnCopy").textContent = "Copiado!";
+                setTimeout(() => el("btnCopy").textContent = "Copiar", 1200);
+            });
+
+            el("btnCheck").addEventListener("click", async () => {
+                if (!currentTxId) return;
+                await checkStatus(currentTxId, true);
+            });
+
+            el("btnPay").addEventListener("click", async () => {
+                const btn = el("btnPay");
+                try {
+                    setLoading(btn, true);
+
+                    const pix = await createPix();
+
+                    // Normalização: esperamos do backend:
+                    // { transaction_id, pix_payload, status, expires_at_iso, amount_cents }
+                    currentTxId = pix.transaction_id || pix.id || null;
+                    el("pixId").textContent = currentTxId ? String(currentTxId) : "—";
+                    el("pixValue").textContent = formatCentsToBRL(pix.amount_cents || recalc().total);
+
+                    const payload = pix.pix_payload || pix.copy_paste || pix.payload || "";
+                    el("pixCopy").value = payload;
+
+                    if (!payload) throw new Error("PIX gerado sem payload (copia e cola). Ajuste o backend para retornar o payload.");
+
+                    expiresAtMs = pix.expires_at_iso ? Date.parse(pix.expires_at_iso) : null;
+
+                    el("pixStatus").textContent = (pix.status || "Aguardando pagamento");
+                    el("pixTimer").textContent = expiresAtMs ? "Calculando tempo..." : "—";
+
+                    renderQrFromPayload(payload);
+                    openModal();
+                    startPolling();
+
+                } catch (err) {
+                    alert(err.message || "Erro ao gerar PIX.");
+                } finally {
+                    setLoading(btn, false);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
