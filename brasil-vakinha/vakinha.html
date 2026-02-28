@@ -987,8 +987,8 @@
                 }
 
                 // consulta status
-                const st = await checkStatus(currentTxId, false);
-                if (st === "paid" || st === "approved" || st === "confirmed") {
+                const norm = String(st || "").toUpperCase();
+                if (norm === "PAID") {
                     el("pixStatus").textContent = "Pago ✅";
                     stopPolling();
                 }
@@ -1007,7 +1007,7 @@
 
                 if (!r.ok) throw new Error(data?.error || "Falha ao consultar status");
 
-                const status = (data.status || "").toLowerCase();
+                const status = (data.status || "").toUpperCase();
                 if (status) {
                     el("pixStatus").textContent = status;
                     if (showAlerts && (status === "paid" || status === "approved" || status === "confirmed")) {
@@ -1074,7 +1074,7 @@
                 }
             };
 
-            const r = await fetch("/api/blackcat-create-pix", {
+            const r = await fetch("/api/blackcat-create-pix.js", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)

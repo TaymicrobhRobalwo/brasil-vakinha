@@ -1,53 +1,39 @@
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Método não permitido" });
-  }
+  if (req.method !== "GET") return res.status(405).json({ error: "Método não permitido" });
 
   try {
     const BASE_URL = process.env.BLACKCAT_API_BASE_URL || "https://api.blackcatpagamentos.online/api";
-    const TOKEN = process.env.BLACKCAT_API_TOKEN;
+    const API_KEY = process.env.BLACKCAT_API_KEY;
 
-    // Ajuste se sua rota de status for diferente:
-    // ex: /pix/status?id=...  OU /pix/<id>  OU /transactions/<id>
-    const STATUS_PATH_TEMPLATE = process.env.BLACKCAT_PIX_STATUS_PATH_TEMPLATE || "/pix/{id}";
-
-    if (!TOKEN) {
-      return res.status(500).json({ error: "BLACKCAT_API_TOKEN não configurado na Vercel." });
-    }
+    if (!API_KEY) return res.status(500).json({ error: "BLACKCAT_API_KEY não configurada." });
 
     const id = String(req.query.id || "").trim();
     if (!id) return res.status(400).json({ error: "Parâmetro id é obrigatório." });
 
-    const path = STATUS_PATH_TEMPLATE.replace("{id}", encodeURIComponent(id));
-    const url = `${BASE_URL}${path}`;
+    const url = `${BASE_URL}/sales/${encodeURIComponent(id)}/status`;
 
     const bcResp = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${TOKEN}`,
-        "x-api-token": TOKEN
+        "X-API-Key": API_KEY
       }
     });
 
     const raw = await bcResp.text();
-    let data = null;
+    let data;
     try { data = JSON.parse(raw); } catch { data = { raw }; }
 
     if (!bcResp.ok) {
       return res.status(400).json({
-        error: "Erro na Blackcat ao consultar status.",
-        details: data
+        error: "Blackcat retornou erro ao consultar status.",
+        status: bcResp.status,
+        response: data
       });
     }
 
-    // Normaliza status
-    const status =
-      data?.status ||
-      data?.data?.status ||
-      data?.charge?.status ||
-      data?.pix?.status ||
-      "unknown";
+    const d = data?.data || data;
+    const status = String(d?.status || "PENDING").toUpperCase(); // PENDING | PAID | CANCELLED | REFUNDED
 
     return res.status(200).json({ status, original: data });
 

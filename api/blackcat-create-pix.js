@@ -1,22 +1,22 @@
 export default async function handler(req, res) {
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Método não permitido" });
-    }
+    if (req.method !== "POST") return res.status(405).json({ error: "Método não permitido" });
 
     try {
         const BASE_URL = process.env.BLACKCAT_API_BASE_URL || "https://api.blackcatpagamentos.online/api";
-        const TOKEN = process.env.BLACKCAT_API_TOKEN; // sua key/token
-        const CREATE_PATH = process.env.BLACKCAT_PIX_CREATE_PATH || "/pix"; // ajuste se sua rota for diferente
+        const API_KEY = process.env.BLACKCAT_API_KEY;
 
-        if (!TOKEN) {
-            return res.status(500).json({ error: "BLACKCAT_API_TOKEN não configurado na Vercel." });
+        if (!API_KEY) {
+            return res.status(500).json({ error: "BLACKCAT_API_KEY não configurada na Vercel." });
         }
 
-        const body = req.body || {};
-        const amount_cents = Number(body.amount_cents || 0);
+        // Doc: POST /sales/create-sale
+        const url = `${BASE_URL}/sales/create-sale`;
 
-        if (!Number.isFinite(amount_cents) || amount_cents <= 0) {
-            return res.status(400).json({ error: "amount_cents inválido." });
+        const body = req.body || {};
+        const amount = Number(body.amount_cents || body.amount || 0); // centavos
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+            return res.status(400).json({ error: "amount (centavos) inválido." });
         }
 
         const payer = body.payer || {};
@@ -26,137 +26,98 @@ export default async function handler(req, res) {
         const cpf = String(payer.cpf || "").trim();
 
         if (!name || !email || !phone || !cpf) {
-            return res.status(400).json({ error: "Dados do pagador incompletos." });
+            return res.status(400).json({ error: "Dados do cliente incompletos (name/email/phone/cpf)." });
         }
 
-        // ID externo (você pode trocar por algo do seu sistema)
-        const external_id = `vakinha_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+        const externalRef = `vakinha_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 
-        /**
-         * ========= IMPORTANTE =========
-         * A Blackcat pode ter variações de endpoint/payload dependendo da versão.
-         * Aqui vai um payload "bem padrão" de geração de PIX.
-         *
-         * Se a SUA Blackcat exigir nomes diferentes:
-         * - troque os campos aqui
-         * - e ajuste a normalização do retorno mais abaixo.
-         */
+        // ✅ Payload alinhado com a doc
+        // Campos obrigatórios: amount, paymentMethod, items (min 1), customer
         const payload = {
-            external_id,
-            amount: amount_cents, // muitas APIs PIX usam "amount" em centavos
+            amount,                 // em centavos
             currency: "BRL",
-            payer: {
+            paymentMethod: "PIX",
+            items: [
+                {
+                    name: "Doação - SOS Juiz de Fora",
+                    quantity: 1,
+                    unitPrice: amount
+                }
+            ],
+            customer: {
                 name,
                 email,
                 phone,
-                document: cpf, // algumas chamam de document/cpf
-                document_type: "CPF"
+                cpf
             },
-            // Se existir parâmetro "tangible" na sua versão:
-            tangible: false,
-            // metadata opcional:
-            metadata: body.metadata || {}
+            externalRef,
+            metadata: body.metadata ? JSON.stringify(body.metadata) : undefined,
+            postbackUrl: process.env.BLACKCAT_POSTBACK_URL || undefined
         };
 
-        const url = `${BASE_URL}${CREATE_PATH}`;
+        // remove undefined
+        Object.keys(payload).forEach((k) => payload[k] === undefined && delete payload[k]);
 
         const bcResp = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // Ajuste o header conforme sua Blackcat:
-                // Alguns usam Authorization: Bearer <token>
-                // Outros usam x-api-key / x-api-token
-                "Authorization": `Bearer ${TOKEN}`,
-                "x-api-token": TOKEN
+                "X-API-Key": API_KEY
             },
             body: JSON.stringify(payload)
         });
 
         const raw = await bcResp.text();
-        let data = null;
+        let data;
         try { data = JSON.parse(raw); } catch { data = { raw }; }
 
         if (!bcResp.ok) {
             return res.status(400).json({
-                error: "Erro na Blackcat ao criar PIX.",
-                details: data
+                error: "Blackcat retornou erro ao criar venda.",
+                status: bcResp.status,
+                response: data,
+                sent_payload: payload
             });
         }
 
-        /**
-         * ========= NORMALIZAÇÃO =========
-         * A ideia é SEMPRE retornar pro front nesse formato:
-         * {
-         *   transaction_id,
-         *   amount_cents,
-         *   status,
-         *   pix_payload,      // copia e cola
-         *   expires_at_iso
-         * }
-         *
-         * Ajuste os caminhos abaixo conforme a resposta real da SUA Blackcat.
-         */
+        // ✅ Normalização com base no padrão da doc (response.success + response.data)
+        const d = data?.data || data;
+
         const transaction_id =
-            data?.transaction_id ||
-            data?.id ||
-            data?.data?.id ||
-            data?.data?.transaction_id ||
-            data?.charge?.id ||
+            d?.transactionId ||
+            d?.id ||
+            d?.saleId ||
             null;
 
         const status =
-            data?.status ||
-            data?.data?.status ||
-            data?.charge?.status ||
-            "pending";
+            (d?.status || "PENDING");
 
-        // Copia e cola (payload EMV)
+        // PIX: em muitas integrações vem algo tipo pix.code/pix.qrCode/pix.copyPaste
         const pix_payload =
-            data?.pix_payload ||
-            data?.copy_paste ||
-            data?.pix?.payload ||
-            data?.pix?.emv ||
-            data?.data?.pix_payload ||
-            data?.data?.pix?.payload ||
-            data?.data?.pix?.emv ||
-            data?.charge?.pix?.payload ||
-            data?.charge?.pix?.emv ||
+            d?.pix?.copyPaste ||
+            d?.pix?.code ||
+            d?.pix?.payload ||
+            d?.pix?.emv ||
             "";
 
         const expires_at_iso =
-            data?.expires_at ||
-            data?.expires_at_iso ||
-            data?.data?.expires_at ||
-            data?.data?.expires_at_iso ||
-            data?.pix?.expires_at ||
-            data?.data?.pix?.expires_at ||
+            d?.pix?.expiresAt ||
+            d?.pix?.expires_at ||
             null;
-
-        if (!pix_payload) {
-            // Se sua API retorna QRCode base64 ao invés de payload, você ainda pode gerar QR no front
-            // mas o ideal é ter "copia e cola". Ajuste aqui conforme retorno real.
-            // Vamos retornar mesmo assim com aviso.
-            return res.status(200).json({
-                transaction_id,
-                amount_cents,
-                status,
-                pix_payload: "",
-                expires_at_iso,
-                warning: "PIX criado mas não encontramos pix_payload na resposta. Ajuste a normalização conforme retorno da Blackcat.",
-                original: data
-            });
-        }
 
         return res.status(200).json({
             transaction_id,
-            amount_cents,
+            amount_cents: amount,
             status,
             pix_payload,
-            expires_at_iso
+            expires_at_iso,
+            original: data
         });
 
     } catch (err) {
-        return res.status(500).json({ error: "Erro interno", details: String(err?.message || err) });
+        return res.status(500).json({
+            error: "Erro interno no backend",
+            details: String(err?.message || err)
+        });
     }
 }
