@@ -1074,6 +1074,21 @@
                 }
             };
 
+            const utm = getUtmForOrder();
+
+            const payload = {
+                amount_cents: amountCents,
+                payer: { name, email, phone, cpf },
+                metadata: { /* seu metadata */ },
+                utmify: utm // ✅ manda tudo pro backend
+            };
+
+            const r = await fetch("/api/blackcat-create-pix", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
             const r = await fetch("/api/blackcat-create-pix", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -1151,6 +1166,51 @@
                 }
             });
         });
+
+    </script>
+
+    <script>
+        function getQueryParams() {
+            const p = new URLSearchParams(location.search);
+            const obj = {};
+            for (const [k, v] of p.entries()) obj[k] = v;
+            return obj;
+        }
+
+        function pickUtm(obj) {
+            const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+            const out = {};
+            keys.forEach(k => { if (obj[k]) out[k] = obj[k]; });
+            return out;
+        }
+
+        function saveUtmFromUrl() {
+            const qp = getQueryParams();
+            const utm = pickUtm(qp);
+            if (Object.keys(utm).length) {
+                localStorage.setItem("utmify_utm", JSON.stringify(utm));
+            }
+        }
+
+        function loadUtm() {
+            try {
+                return JSON.parse(localStorage.getItem("utmify_utm") || "{}");
+            } catch {
+                return {};
+            }
+        }
+
+        // roda ao abrir a página
+        saveUtmFromUrl();
+
+        // use isto na hora de montar o payload do createPix:
+        function getUtmForOrder() {
+            // prioridade: URL > storage
+            const qp = getQueryParams();
+            const utmUrl = pickUtm(qp);
+            const utmStore = loadUtm();
+            return { ...utmStore, ...utmUrl };
+        }
     </script>
 </body>
 
