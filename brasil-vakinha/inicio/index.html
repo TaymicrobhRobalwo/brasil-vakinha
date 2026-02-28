@@ -634,9 +634,33 @@
                     onclick="window.location.href='/brasil-vakinha/vakinha.html' + window.location.search;">
                     <div class="sc-fqkvVR hXGXXh" data-cy="campaign-toolbar">Quero Ajudar</div>
                   </button>
-                  <button type="button" class="sc-eldPxv hsDtGr">
-                    <div class="sc-fqkvVR IPZdF" data-cy="campaign-toolbar">Compartilhar</div>
+                  <button type="button" class="sc-eldPxv hsDtGr" onclick="compartilharPagina()">
+                    <div class="sc-fqkvVR IPZdF" data-cy="campaign-toolbar">
+                      Compartilhar
+                    </div>
                   </button>
+                  <script>
+                    function compartilharPagina() {
+                      const urlAtual = window.location.href;
+                      const titulo = document.title;
+
+                      if (navigator.share) {
+                        navigator.share({
+                          title: titulo,
+                          text: "Vamos ajudar o SOS Juiz de Fora! Doe agora para vítimas das chuvas e deslizamentos. Acesse:",
+                          url: urlAtual
+                        })
+                          .then(() => console.log("Compartilhamento realizado"))
+                          .catch((error) => console.log("Erro ao compartilhar:", error));
+                      } else {
+                        // Fallback para desktop
+                        window.open(
+                          "https://api.whatsapp.com/send?text=" + encodeURIComponent(titulo + " " + urlAtual),
+                          "_blank"
+                        );
+                      }
+                    }
+                  </script>
                 </div>
               </div>
               <div class="sc-imWYAI bluXAf">
