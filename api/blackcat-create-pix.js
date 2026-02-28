@@ -9,7 +9,7 @@ async function readJsonBody(req) {
             if (!data) return resolve({});
             try {
                 resolve(JSON.parse(data));
-            } catch (e) {
+            } catch {
                 reject(new Error("JSON inválido no body"));
             }
         });
@@ -17,8 +17,12 @@ async function readJsonBody(req) {
     });
 }
 
+function onlyDigits(v) {
+    return String(v || "").replace(/\D+/g, "");
+}
+
 module.exports = async (req, res) => {
-    // CORS (opcional, mas seguro)
+    // CORS
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -32,73 +36,62 @@ module.exports = async (req, res) => {
 
         if (!API_KEY) {
             return res.status(500).json({
-                error: "BLACKCAT_API_KEY não configurada na Vercel.",
-                hint: "Vercel > Settings > Environment Variables > BLACKCAT_API_KEY"
+                error: "BLACKCAT_API_KEY não configurada na Vercel."
             });
         }
 
         const body = await readJsonBody(req);
 
-        // front manda amount_cents e payer.*
-        const amount = Number(body.amount_cents || body.amount || 0); // em centavos
+        const amount = Number(body.amount_cents || body.amount || 0); // centavos
         if (!Number.isFinite(amount) || amount <= 0) {
-            return res.status(400).json({
-                error: "amount (centavos) inválido.",
-                received: body.amount_cents || body.amount
-            });
+            return res.status(400).json({ error: "amount (centavos) inválido." });
         }
 
         const payer = body.payer || {};
         const name = String(payer.name || "").trim();
         const email = String(payer.email || "").trim();
-        const phone = String(payer.phone || "").trim();
-        const cpf = String(payer.cpf || "").trim(); // já deve vir só com dígitos
+        const phone = onlyDigits(payer.phone);
+        const cpf = onlyDigits(payer.cpf);
 
-        if (!name || !email || !phone || !cpf) {
+        if (!name || !email || !phone || cpf.length !== 11) {
             return res.status(400).json({
-                error: "Dados do cliente incompletos (name/email/phone/cpf).",
-                received: { name: !!name, email: !!email, phone: !!phone, cpf: !!cpf }
+                error: "Dados do cliente incompletos/invalidos (name/email/phone/cpf).",
+                received: { name: !!name, email: !!email, phone_len: phone.length, cpf_len: cpf.length }
             });
         }
 
         const externalRef = `vakinha_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 
-        // ✅ Compatibilidade máxima: envia customer + customerData + buyer, e document aliases
-        const customerObj = {
-            name,
-            email,
-            phone,
-            cpf,
-            document: cpf,
-            documentNumber: cpf
-        };
-
-        // Doc: POST /sales/create-sale
+        // ✅ payload 1:1 com a doc
         const payload = {
             amount,
             currency: "BRL",
-            paymentMethod: "PIX",
-
+            paymentMethod: "pix", // doc usa "pix"
             items: [
                 {
-                    name: "Doação - SOS Juiz de Fora",
-                    quantity: 1,
+                    title: "Doação - SOS Juiz de Fora",
                     unitPrice: amount,
-                    price: amount,
-                    total: amount
+                    quantity: 1,
+                    tangible: false
                 }
             ],
-
-            customer: customerObj,
-            customerData: customerObj,
-            buyer: customerObj,
-
-            externalRef,
+            customer: {
+                name,
+                email,
+                phone,
+                document: {
+                    number: cpf,
+                    type: "cpf"
+                }
+            },
+            pix: {
+                expiresInDays: 1
+            },
             metadata: body.metadata ? JSON.stringify(body.metadata) : undefined,
-            postbackUrl: process.env.BLACKCAT_POSTBACK_URL || undefined
+            postbackUrl: process.env.BLACKCAT_POSTBACK_URL || undefined,
+            externalRef
         };
 
-        // remove undefined
         Object.keys(payload).forEach((k) => payload[k] === undefined && delete payload[k]);
 
         const url = `${BASE_URL}/sales/create-sale`;
@@ -125,30 +118,30 @@ module.exports = async (req, res) => {
             });
         }
 
-        // Normaliza retorno (doc costuma ser { success, data: {...} })
+        // Resposta da doc: data.paymentData.copyPaste / qrCodeBase64 etc
         const d = data?.data || data;
 
-        const transaction_id = d?.transactionId || d?.id || d?.saleId || null;
+        const transaction_id = d?.transactionId || null;
         const status = String(d?.status || "PENDING").toUpperCase();
 
         const pix_payload =
-            d?.pix?.copyPaste ||
-            d?.pix?.code ||
-            d?.pix?.payload ||
-            d?.pix?.emv ||
+            d?.paymentData?.copyPaste ||
+            d?.paymentData?.qrCode ||
+            d?.paymentData?.emv ||
             "";
 
-        const expires_at_iso =
-            d?.pix?.expiresAt ||
-            d?.pix?.expires_at ||
-            null;
+        const qr_code_base64 = d?.paymentData?.qrCodeBase64 || null;
+        const expires_at_iso = d?.paymentData?.expiresAt || null;
+        const invoice_url = d?.invoiceUrl || null;
 
         return res.status(200).json({
             transaction_id,
             amount_cents: amount,
             status,
             pix_payload,
+            qr_code_base64,
             expires_at_iso,
+            invoice_url,
             original: data
         });
 
