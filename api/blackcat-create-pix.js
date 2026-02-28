@@ -99,7 +99,7 @@ module.exports = async (req, res) => {
             paymentMethod: "pix",
             items: [
                 {
-                    title: "Doação - SOS Juiz de Fora",
+                    title: "Kit Body Splash - Mais Vendidos",
                     unitPrice: amount,
                     quantity: 1,
                     tangible: false
