@@ -222,14 +222,3 @@ module.exports = async (req, res) => {
         });
     }
 };
-
-await fetch(`${process.env.APP_URL}/api/utmify`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        event: "pix_pendente",
-        transactionId: result.data.transactionId,
-        amount: result.data.amount,
-        metadata: payload.metadata
-    }),
-});

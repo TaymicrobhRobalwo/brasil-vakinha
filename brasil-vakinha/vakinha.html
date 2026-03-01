@@ -1327,28 +1327,6 @@
                 body: JSON.stringify(payload)
             });
 
-            try {
-                const utms = getUtmParams();
-                const clickId = getOrCreateClickId();
-
-                await fetch("/api/utmify-pix-pending", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        clickId,
-                        utms,
-                        transactionId: pix?.data?.transactionId || pix?.transactionId || pix?.id,
-                        amountCents: pix?.data?.amount || pix?.amount || window.__DONATION__?.totalCents,
-                        email: payer.email,
-                        phone: payer.phone,
-                        cpf: payer.cpf,
-                        name: payer.name
-                    })
-                });
-            } catch (e) {
-                console.warn("UTMify pendente falhou:", e);
-            }
-
             const data = await r.json();
             if (!r.ok) throw new Error(data?.error || "Não foi possível gerar o PIX.");
 
@@ -1430,26 +1408,6 @@
                 }
             });
         });
-
-
-        function getUtmParams() {
-            const p = new URLSearchParams(window.location.search);
-            const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-            const out = {};
-            keys.forEach(k => { const v = p.get(k); if (v) out[k] = v; });
-            return out;
-        }
-
-        function getOrCreateClickId() {
-            // guarda um id único no navegador, para amarrar pendente/pago
-            const key = "__utmify_click_id";
-            let v = localStorage.getItem(key);
-            if (!v) {
-                v = "clk_" + Date.now() + "_" + Math.random().toString(16).slice(2);
-                localStorage.setItem(key, v);
-            }
-            return v;
-        }
 
     </script>
 
