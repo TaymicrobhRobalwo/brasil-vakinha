@@ -985,9 +985,50 @@
                         </div>
 
                         <div class="status" id="pixStatusBox">
-                            <div><b>Status:</b> <span id="pixStatus">Aguardando pagamento</span></div>
-                            <small id="pixTimer">—</small>
+                            <div><b>Status:</b> <span id="status-do-pix">Aguardando pagamento</span></div>
+                            <small id="timer-pix">—</small>
                         </div>
+
+                        <script>
+                            (function () {
+
+                                const TIMER_DURATION_SECONDS = 30 * 60; // 30 minutos
+                                const timerElement = document.getElementById("timer-pix");
+                                const statusElement = document.getElementById("status-do-pix");
+
+                                if (!timerElement) return;
+
+                                let remaining = TIMER_DURATION_SECONDS;
+
+                                function formatTime(seconds) {
+                                    const minutes = Math.floor(seconds / 60);
+                                    const secs = seconds % 60;
+                                    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+                                }
+
+                                function updateTimer() {
+                                    if (remaining <= 0) {
+                                        clearInterval(interval);
+                                        timerElement.textContent = "Tempo expirado";
+                                        if (statusElement) {
+                                            statusElement.textContent = "Expirado";
+                                            statusElement.style.color = "#ff0000";
+                                        }
+                                        return;
+                                    }
+
+                                    timerElement.textContent = "Expira em " + formatTime(remaining);
+                                    remaining--;
+                                }
+
+                                // Atualiza imediatamente
+                                updateTimer();
+
+                                // Atualiza a cada segundo
+                                const interval = setInterval(updateTimer, 1000);
+
+                            })();
+                        </script>
 
                         <div class="modal-actions">
                             <button class="btn" type="button" id="btnCheck">Já paguei (verificar)</button>
