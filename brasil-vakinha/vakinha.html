@@ -986,7 +986,10 @@
                             <button type="button" id="btnCopy">Copiar</button>
                         </div>
 
-
+                        <div class="status" id="pixStatusBox">
+                            <div><b>Status:</b> <span id="pixStatus">Aguardando pagamento</span></div>
+                            <small id="pixTimer">—</small>
+                        </div>
 
                         <div class="pix-status-box">
                             <div class="pix-status-content">
@@ -1005,7 +1008,6 @@
 
                             </div>
                         </div>
-
                         <style>
                             .pix-status-box {
                                 width: 100%;
@@ -1014,7 +1016,6 @@
                                 border-radius: 12px;
                                 padding: 12px 16px;
                                 margin-bottom: 15px;
-                                margin-top: 10px;
                             }
 
                             .pix-status-content {
@@ -1055,6 +1056,11 @@
                                 }
                             }
                         </style>
+
+                        <div class="modal-actions">
+                            <button class="btn" type="button" id="btnCheck">Já paguei (verificar)</button>
+                            <button class="btn primary" type="button" id="btnOk">Ok</button>
+                        </div>
 
                     </div>
                 </div>
