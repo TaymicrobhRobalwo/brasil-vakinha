@@ -163,7 +163,7 @@ module.exports = async (req, res) => {
         const d = data?.data || data;
 
         const transaction_id = d?.transactionId || null;
-        const status = String(d?.status || "PENDING").toUpperCase();
+        const status = String(d?.status || "Pendente").toUpperCase();
 
         const pix_payload =
             d?.paymentData?.copyPaste ||
