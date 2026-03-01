@@ -763,25 +763,90 @@
         </section>
 
         <section class="form" id="donationForm">
-            <div class="field">
-                <label for="phone">Telefone (WhatsApp)</label>
-                <input id="phone" inputmode="tel" placeholder="(00) 00000-0000" autocomplete="tel" />
+
+            <label class="anon-row">
+                <input type="checkbox" id="anonDonate">
+                <span>Doar anonimamente</span>
+            </label>
+            <style>
+                .anon-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin: 10px 0 14px;
+                    font-size: 14px;
+                }
+
+                .anon-row input {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: #24ca68;
+                }
+            </style>
+
+
+            <script>document.addEventListener("DOMContentLoaded", () => {
+                    const ANON_DONOR = {
+                        // ✅ PREENCHA AQUI COM OS SEUS DADOS
+                        name: "Anônimo",
+                        email: "anonimo@gmail.com",
+                        phone: "11999999999", // Ex: 31999999999
+                        cpf: "03263137298"         // Ex: 12345678901
+                    };
+
+                    const anonToggle = el("anonDonate");
+                    if (!anonToggle) return; // se esqueceu de adicionar o checkbox, evita erro
+
+                    const fieldIds = ["phone", "email", "cpf", "name"];
+                    const wrappers = fieldIds
+                        .map(id => el(id))
+                        .filter(Boolean)
+                        .map(input => input.closest(".field"));
+
+                    function setAnonymousUI(isAnon) {
+                        wrappers.forEach(w => { if (w) w.style.display = isAnon ? "none" : ""; });
+                    }
+
+                    anonToggle.addEventListener("change", () => {
+                        setAnonymousUI(anonToggle.checked);
+                    });
+
+                    // estado inicial
+                    setAnonymousUI(anonToggle.checked);
+
+                    // ====== IMPORTANTE: usar dados ANON no createPix() ======
+                    // No seu createPix(), troque a leitura dos campos por:
+                    // const isAnon = el("anonDonate").checked;
+                    // const phone = isAnon ? ANON_DONOR.phone : el("phone").value.trim();
+                    // const email = isAnon ? ANON_DONOR.email : el("email").value.trim();
+                    // const cpf   = isAnon ? ANON_DONOR.cpf   : el("cpf").value.trim();
+                    // const name  = isAnon ? ANON_DONOR.name  : el("name").value.trim();
+                });
+
+            </script>
+
+            <div class="campos">
+                <div class="field">
+                    <label for="phone">Telefone (WhatsApp)</label>
+                    <input id="phone" inputmode="tel" placeholder="(00) 00000-0000" autocomplete="tel" />
+                </div>
+
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input id="email" type="email" placeholder="Insira o seu melhor e-mail" autocomplete="email" />
+                </div>
+
+                <div class="field">
+                    <label for="cpf">CPF</label>
+                    <input id="cpf" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off" />
+                </div>
+
+                <div class="field">
+                    <label for="name">Nome completo</label>
+                    <input id="name" placeholder="Insira seu nome de registro" autocomplete="name" />
+                </div>
             </div>
 
-            <div class="field">
-                <label for="email">E-mail</label>
-                <input id="email" type="email" placeholder="Insira o seu melhor e-mail" autocomplete="email" />
-            </div>
-
-            <div class="field">
-                <label for="cpf">CPF</label>
-                <input id="cpf" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off" />
-            </div>
-
-            <div class="field">
-                <label for="name">Nome completo</label>
-                <input id="name" placeholder="Insira seu nome de registro" autocomplete="name" />
-            </div>
 
             <div class="field">
                 <label>Valor da contribuição</label>
@@ -945,10 +1010,6 @@
                             <button class="btn primary" type="button" id="btnOk">Ok</button>
                         </div>
 
-                        <div class="hint">
-                            Dica: após pagar no app do banco, este modal confirma automaticamente quando a Blackcat
-                            marcar como <b>paid</b>.
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1139,10 +1200,12 @@
         // Submit -> cria PIX (Blackcat)
         // =========================
         async function createPix() {
-            const phone = el("phone").value.trim();
-            const email = el("email").value.trim();
-            const cpf = el("cpf").value.trim();
-            const name = el("name").value.trim();
+            const isAnon = el("anonDonate").checked;
+
+            const phone = isAnon ? ANON_DONOR.phone : el("phone").value.trim();
+            const email = isAnon ? ANON_DONOR.email : el("email").value.trim();
+            const cpf = isAnon ? ANON_DONOR.cpf : el("cpf").value.trim();
+            const name = isAnon ? ANON_DONOR.name : el("name").value.trim();
 
             const { total } = recalc();
 
