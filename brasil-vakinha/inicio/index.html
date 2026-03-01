@@ -104,6 +104,201 @@
 
 <body>
 
+
+  <!-- =========================================
+   BARRA FLUTUANTE PREMIUM - VERSÃO FINAL
+========================================= -->
+  <style>
+    :root {
+      --vakinha-green: #24ca68;
+      --vakinha-green-press: #a6e9ae;
+      --vakinha-text: #1f2937;
+      --vakinha-muted: #000000;
+      --vakinha-border: #e5e7eb;
+      --vakinha-bg: #ffffff;
+      --vakinha-soft: #f3f4f6;
+    }
+
+    /* ===== ANIMAÇÃO DE ENTRADA ===== */
+    @keyframes slideUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== BARRA FIXA ===== */
+    .vakinha-floatbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99999;
+      background: var(--vakinha-bg);
+      border-top: 1px solid var(--vakinha-border);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, .10);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      animation: slideUpFade .35s ease-out both;
+    }
+
+    .vakinha-inner {
+      max-width: 430px;
+      margin: 0 auto;
+    }
+
+    /* ===== DOAÇÃO PROTEGIDA ===== */
+    .vakinha-protected {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 44px;
+      background: var(--vakinha-soft);
+      border-bottom: 1px solid var(--vakinha-border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--vakinha-muted);
+      letter-spacing: .2px;
+
+      /* micro sombra interna */
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6),
+        inset 0 -1px 2px rgba(0, 0, 0, .04);
+    }
+
+    .vakinha-protected svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ===== WRAP BOTÕES ===== */
+    .vakinha-btn-wrap {
+      padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ===== BOTÃO PRINCIPAL ===== */
+    .vakinha-help-btn {
+      width: 100%;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, .05);
+      background: var(--vakinha-green);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+
+      /* profundidade */
+      box-shadow:
+        0 3px 0 rgba(0, 0, 0, .08),
+        0 8px 18px rgba(0, 0, 0, .10);
+
+      transition: all .15s ease;
+    }
+
+    .vakinha-help-btn:hover {
+      filter: brightness(1.02);
+    }
+
+    .vakinha-help-btn:active {
+      background: var(--vakinha-green-press);
+      transform: translateY(3px);
+      box-shadow:
+        0 1px 0 rgba(0, 0, 0, .08),
+        0 3px 8px rgba(0, 0, 0, .08);
+    }
+
+    /* ===== BOTÃO SECUNDÁRIO ===== */
+    .vakinha-share-btn {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #374151;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+      transition: all .15s ease;
+    }
+
+    .vakinha-share-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .vakinha-share-btn:active {
+      transform: translateY(2px);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, .08);
+    }
+  </style>
+
+  <div class="vakinha-floatbar">
+    <div class="vakinha-inner">
+
+      <!-- DOAÇÃO PROTEGIDA -->
+      <div class="vakinha-protected">
+        <svg viewBox="0 0 24 24" fill="#24ca68" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z">
+          </path>
+        </svg>
+        DOAÇÃO PROTEGIDA
+      </div>
+
+      <!-- BOTÕES -->
+      <div class="vakinha-btn-wrap">
+        <a class="vakinha-help-btn" href="/brasil-vakinha/vakinha.html">
+          Quero Ajudar
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* Ajusta padding do body para não esconder conteúdo */
+    (function () {
+      const bar = document.querySelector('.vakinha-floatbar');
+      if (!bar) return;
+
+      function adjustPadding() {
+        document.body.style.paddingBottom = bar.offsetHeight + 'px';
+      }
+
+      adjustPadding();
+      window.addEventListener('resize', adjustPadding);
+    })();
+
+    /* Compartilhar página */
+    function sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copiado!");
+      }
+    }
+  </script>
+
   <div id="__next">
     <div class="sc-7a509a5-1 bxtwIv">
       <header id="headerContainer">
@@ -414,7 +609,7 @@
                   <h2>
                     <strong>SOS Juiz de Fora (MG): doe agora para vítimas das chuvas e deslizamentos</strong>
                   </h2>
-                  <p>ATUALIZAÇÃO (24/02/2026, [15:00]): Juiz de Fora (MG) enfrenta uma emergência após chuvas
+                  <p>ATUALIZAÇÃO (26/02/2026, [15:00]): Juiz de Fora (MG) enfrenta uma emergência após chuvas
                     históricas. Segundo declaração da prefeita Margarida Salomão, a cidade chegou a 584 mm de chuva
                     acumulada em fevereiro e decretou estado de calamidade pública. Há registros de soterramentos,
                     alagamentos e comunidades isoladas, além do transbordamento do Rio Paraibuna.</p>

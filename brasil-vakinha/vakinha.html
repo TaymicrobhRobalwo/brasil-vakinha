@@ -875,24 +875,8 @@
                     <input id="boost" type="checkbox" style="width:18px;height:18px;accent-color:var(--green)" />
                     <div class="boost-badge">TURBINE SUA DOAÇÃO</div>
                 </div>
-                <div class="boost-price" id="boostPrice">+R$ 6,99</div>
+                <div class="boost-price" id="boostPrice">+R$ 50,00</div>
 
-            </div>
-            <div class="turbine-option"
-                style="padding: 15px 20px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <img src="images/lucky.webp" alt="Trevo" style="width: 24px; height: 24px; object-fit: contain;"
-                            id="turbine-icon-1">
-
-                    </div>
-                    <div>
-                        <div style="font-weight: 600; color: #333; font-size: 14px;">3 números da sorte</div>
-                        <div style="color: #666; font-size: 12px; line-height: 1.3;">Você e quem criou a vaquinha
-                            concorrem ao sorteio de R$ 15.000,00 do Vakinha Premiada</div>
-                    </div>
-                </div>
-                <span style="color: #333; font-weight: 600; font-size: 14px;">Grátis</span>
             </div>
 
             <div class="preset-grid" id="presetGrid">
@@ -1075,7 +1059,7 @@
         // =========================
         // State / Totais
         // =========================
-        const BOOST_CENTS = 699;
+        const BOOST_CENTS = 5000; // R$ 50,00 de boost fixo
 
         function recalc() {
             const base = parseBRLToCents(el("amount").value);
